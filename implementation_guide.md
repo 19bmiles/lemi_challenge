@@ -39,7 +39,7 @@ npx tailwindcss init -p
 
 #### Step 1.2: Setup Firebase Project
 1. Go to [Firebase Console](https://console.firebase.google.com)
-2. Create new project: "wedding-challenge-2025"
+2. Create new project: "lemi-challenge-2025"
 3. Enable:
    - **Authentication** → Anonymous + Google Sign-in
    - **Firestore Database** → Start in test mode
