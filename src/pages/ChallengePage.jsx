@@ -44,15 +44,16 @@ export default function ChallengePage() {
 
   const toggleDrink = async (drinkId) => {
     if (!userId) return;
-    
+
     const participantRef = doc(db, 'participants', userId);
     const currentStatus = participant?.progress?.[drinkId]?.checked || false;
-    
+    const currentCount = participant?.completedCount || 0;
+
     try {
       await updateDoc(participantRef, {
         [`progress.${drinkId}.checked`]: !currentStatus,
         [`progress.${drinkId}.timestamp`]: new Date(),
-        completedCount: participant.completedCount + (currentStatus ? -1 : 1)
+        completedCount: currentCount + (currentStatus ? -1 : 1)
       });
     } catch (error) {
       console.error('Error toggling drink:', error);
