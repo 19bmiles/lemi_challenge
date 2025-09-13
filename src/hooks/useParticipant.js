@@ -16,15 +16,14 @@ export function useParticipant() {
 
     const participantRef = doc(db, 'participants', userId);
     
-    // Create or update participant document
+    // Create or update participant document (only update name, not progress)
     const initParticipant = async () => {
       try {
+        // Only set initial values, don't overwrite progress or completedCount
         await setDoc(participantRef, {
           userId: userId,
           name: userName,
-          startedAt: new Date(),
-          progress: {},
-          completedCount: 0
+          startedAt: new Date()
         }, { merge: true });
       } catch (error) {
         console.error('Error initializing participant:', error);
