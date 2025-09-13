@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import ChallengePage from './pages/ChallengePage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import AdminDashboard from './pages/AdminDashboard';
+import DrinkChooser from './pages/DrinkChooser';
 import { useEffect } from 'react';
 import { db } from './config/firebase';
 import { enableOfflineSupport } from './utils/performance.jsx';
@@ -22,6 +23,7 @@ function App() {
           <Route path="/challenge" element={<ChallengePage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/drink-chooser" element={<DrinkChooser />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
