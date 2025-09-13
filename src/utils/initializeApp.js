@@ -11,6 +11,9 @@ export const initializeChallenge = async () => {
   }
 };
 
-// Uncomment the line below and run the app once to seed data
-// Then comment it back out
-// initializeChallenge();
+// To initialize or update the challenge data:
+// 1. Uncomment the line below
+// 2. Refresh the app in your browser
+// 3. Check the browser console for success message
+// 4. Comment the line back out
+initializeChallenge();
