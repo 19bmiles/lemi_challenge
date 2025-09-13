@@ -20,7 +20,6 @@ export function useCompletion(participant) {
             participantId: participant.userId,
             name: participant.name,
             completedCount: participant.completedCount,
-            photoCount: participant.photoCount,
             completedAt: serverTimestamp()
           });
         } catch (error) {

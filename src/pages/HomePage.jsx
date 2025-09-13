@@ -41,8 +41,8 @@ export default function HomePage() {
             <h2 className="font-semibold text-purple-900 mb-2">Challenge Rules:</h2>
             <ul className="text-sm text-purple-700 space-y-1">
               <li>✅ Check off each drink as you try it</li>
-              <li>📸 Upload a photo with each drink for bonus points</li>
               <li>🏆 Complete all 10 drinks to reach the top</li>
+              <li>📊 Track your progress in real-time</li>
               <li>🎉 Have fun and drink responsibly!</li>
             </ul>
           </div>

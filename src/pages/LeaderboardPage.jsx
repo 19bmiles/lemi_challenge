@@ -13,7 +13,6 @@ export default function LeaderboardPage() {
     const q = query(
       collection(db, 'participants'),
       orderBy('completedCount', 'desc'),
-      orderBy('photoCount', 'desc'),
       limit(50)
     );
 
@@ -94,7 +93,6 @@ export default function LeaderboardPage() {
                         <p className="font-medium text-gray-800">{leader.name}</p>
                         <p className="text-sm text-gray-500">
                           {leader.completedCount}/10 drinks
-                          {leader.photoCount > 0 && ` • ${leader.photoCount} photos`}
                         </p>
                       </div>
                     </div>

@@ -24,8 +24,7 @@ export function useParticipant() {
           name: userName,
           startedAt: new Date(),
           progress: {},
-          completedCount: 0,
-          photoCount: 0
+          completedCount: 0
         }, { merge: true });
       } catch (error) {
         console.error('Error initializing participant:', error);

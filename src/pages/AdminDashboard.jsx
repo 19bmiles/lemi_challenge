@@ -9,7 +9,6 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({
     totalParticipants: 0,
     totalCompletions: 0,
-    totalPhotos: 0,
     averageProgress: 0
   });
 
@@ -21,7 +20,6 @@ export default function AdminDashboard() {
         
         const totalParticipants = participants.length;
         const totalCompletions = participants.filter(p => p.completedCount === 10).length;
-        const totalPhotos = participants.reduce((sum, p) => sum + (p.photoCount || 0), 0);
         const averageProgress = totalParticipants > 0 
           ? participants.reduce((sum, p) => sum + (p.completedCount || 0), 0) / totalParticipants
           : 0;
@@ -29,7 +27,6 @@ export default function AdminDashboard() {
         setStats({
           totalParticipants,
           totalCompletions,
-          totalPhotos,
           averageProgress
         });
       }
@@ -67,11 +64,6 @@ export default function AdminDashboard() {
                   {((stats.totalCompletions / stats.totalParticipants) * 100).toFixed(1)}% completion rate
                 </p>
               )}
-            </div>
-            
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-purple-900">Photos Uploaded</h3>
-              <p className="text-3xl font-bold text-purple-700 mt-2">{stats.totalPhotos}</p>
             </div>
             
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-lg">

@@ -116,9 +116,7 @@ export default function ChallengePage() {
               key={drink.id}
               drink={drink}
               checked={participant?.progress?.[drink.id]?.checked || false}
-              photoUrl={participant?.progress?.[drink.id]?.photoUrl}
               onToggle={() => toggleDrink(drink.id)}
-              participantId={userId}
             />
           ))}
         </div>
