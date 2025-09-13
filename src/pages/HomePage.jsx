@@ -1,17 +1,31 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useUser } from '../contexts/UserContext';
 import { Button } from '../components/ui/Button';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { currentUser, upgradeToGoogle, isAnonymous } = useAuth();
+  const { userName, saveUserName, hasName } = useUser();
+  const [nameInput, setNameInput] = useState(userName || '');
+  const [error, setError] = useState('');
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await upgradeToGoogle();
-    } catch (error) {
-      console.error('Failed to sign in with Google:', error);
+  const handleStartChallenge = () => {
+    if (!nameInput.trim()) {
+      setError('Please enter your name to continue');
+      return;
     }
+    
+    if (nameInput.trim().length < 2) {
+      setError('Name must be at least 2 characters');
+      return;
+    }
+    
+    saveUserName(nameInput.trim());
+    navigate('/challenge');
+  };
+
+  const handleContinueChallenge = () => {
+    navigate('/challenge');
   };
 
   return (
@@ -33,44 +47,84 @@ export default function HomePage() {
             </ul>
           </div>
 
-          <div className="space-y-3">
-            <Button 
-              onClick={() => navigate('/challenge')}
-              variant="primary"
-              className="w-full text-lg py-3"
-            >
-              Start Challenge 🚀
-            </Button>
-
-            <Button 
-              onClick={() => navigate('/leaderboard')}
-              variant="secondary"
-              className="w-full"
-            >
-              View Leaderboard 🏆
-            </Button>
-
-            {isAnonymous && (
-              <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600 mb-2">
-                  Playing as Guest. Sign in to save your progress!
-                </p>
-                <Button 
-                  onClick={handleGoogleSignIn}
-                  variant="primary"
-                  className="w-full"
-                >
-                  Sign in with Google
-                </Button>
+          {hasName ? (
+            <div className="space-y-3">
+              <div className="text-center p-3 bg-green-50 rounded-lg">
+                <p className="text-sm text-gray-600">Welcome back,</p>
+                <p className="text-lg font-semibold text-gray-800">{userName}!</p>
               </div>
-            )}
+              
+              <Button 
+                onClick={handleContinueChallenge}
+                variant="primary"
+                className="w-full text-lg py-3"
+              >
+                Continue Challenge 🚀
+              </Button>
 
-            {!isAnonymous && currentUser && (
-              <div className="text-center text-sm text-gray-600">
-                Signed in as: {currentUser.displayName || currentUser.email}
+              <Button 
+                onClick={() => navigate('/leaderboard')}
+                variant="secondary"
+                className="w-full"
+              >
+                View Leaderboard 🏆
+              </Button>
+
+              <button
+                onClick={() => {
+                  setNameInput('');
+                  saveUserName('');
+                }}
+                className="text-sm text-gray-500 hover:text-gray-700 underline w-full text-center"
+              >
+                Start as different person
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Enter your name to begin:
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => {
+                    setNameInput(e.target.value);
+                    setError('');
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleStartChallenge();
+                    }
+                  }}
+                  placeholder="Your name"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  maxLength={30}
+                />
+                {error && (
+                  <p className="text-red-500 text-sm mt-1">{error}</p>
+                )}
               </div>
-            )}
-          </div>
+
+              <Button 
+                onClick={handleStartChallenge}
+                variant="primary"
+                className="w-full text-lg py-3"
+              >
+                Start Challenge 🚀
+              </Button>
+
+              <Button 
+                onClick={() => navigate('/leaderboard')}
+                variant="secondary"
+                className="w-full"
+              >
+                View Leaderboard 🏆
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

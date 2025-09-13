@@ -1,4 +1,4 @@
-import { AuthProvider } from './contexts/AuthContext';
+import { UserProvider } from './contexts/UserContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ChallengePage from './pages/ChallengePage';
@@ -15,7 +15,7 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
+    <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -24,7 +24,7 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </UserProvider>
   );
 }
 

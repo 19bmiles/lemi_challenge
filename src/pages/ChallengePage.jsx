@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import { useAuth } from '../contexts/AuthContext';
+import { useUser } from '../contexts/UserContext';
 import { useParticipant } from '../hooks/useParticipant';
 import { useCompletion } from '../hooks/useCompletion';
 import DrinkItem from '../components/DrinkItem';
@@ -10,13 +10,20 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ChallengePage() {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { userId, hasName } = useUser();
   const { participant, loading: participantLoading } = useParticipant();
   const [drinks, setDrinks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Track completion
   useCompletion(participant);
+
+  // Redirect to home if no name is set
+  useEffect(() => {
+    if (!hasName) {
+      navigate('/');
+    }
+  }, [hasName, navigate]);
 
   // Load challenge data
   useEffect(() => {
@@ -36,9 +43,9 @@ export default function ChallengePage() {
   }, []);
 
   const toggleDrink = async (drinkId) => {
-    if (!currentUser) return;
+    if (!userId) return;
     
-    const participantRef = doc(db, 'participants', currentUser.uid);
+    const participantRef = doc(db, 'participants', userId);
     const currentStatus = participant?.progress?.[drinkId]?.checked || false;
     
     try {
@@ -111,7 +118,7 @@ export default function ChallengePage() {
               checked={participant?.progress?.[drink.id]?.checked || false}
               photoUrl={participant?.progress?.[drink.id]?.photoUrl}
               onToggle={() => toggleDrink(drink.id)}
-              participantId={currentUser?.uid}
+              participantId={userId}
             />
           ))}
         </div>

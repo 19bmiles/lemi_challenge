@@ -16,4 +16,4 @@ export const initializeChallenge = async () => {
 // 2. Refresh the app in your browser
 // 3. Check the browser console for success message
 // 4. Comment the line back out
-initializeChallenge();
+// initializeChallenge();

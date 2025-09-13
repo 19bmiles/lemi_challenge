@@ -2,17 +2,15 @@ import { useState } from 'react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { storage, db } from '../config/firebase';
-import { useAuth } from '../contexts/AuthContext';
 import imageCompression from 'browser-image-compression';
 
 export default function DrinkItem({ drink, checked, photoUrl, onToggle, participantId }) {
-  const { currentUser } = useAuth();
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(photoUrl);
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
-    if (!file || !currentUser) return;
+    if (!file || !participantId) return;
 
     setUploading(true);
     
@@ -27,13 +25,13 @@ export default function DrinkItem({ drink, checked, photoUrl, onToggle, particip
       
       // Upload to Firebase Storage
       const storageRef = ref(storage, 
-        `challenges/wedding2025/${currentUser.uid}/${drink.id}_${Date.now()}.jpg`
+        `challenges/wedding2025/${participantId}/${drink.id}_${Date.now()}.jpg`
       );
       const snapshot = await uploadBytes(storageRef, compressedFile);
       const downloadURL = await getDownloadURL(snapshot.ref);
       
       // Update Firestore
-      const participantRef = doc(db, 'participants', currentUser.uid);
+      const participantRef = doc(db, 'participants', participantId);
       
       // Get current participant data to update photo count
       const participantDoc = await getDoc(participantRef);
@@ -91,7 +89,7 @@ export default function DrinkItem({ drink, checked, photoUrl, onToggle, particip
               accept="image/*"
               capture="environment"
               onChange={handlePhotoUpload}
-              disabled={uploading || !currentUser}
+              disabled={uploading || !participantId}
               className="hidden"
             />
             <div className={`px-4 py-2 rounded text-white font-medium transition-colors ${
